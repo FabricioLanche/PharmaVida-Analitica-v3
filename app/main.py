@@ -27,10 +27,18 @@ swagger_config = {
     "specs_route": "/apidocs/"
 }
 
-# Cargar la documentación desde el archivo YAML
-swagger_file_path = os.path.join(os.path.dirname(__file__), 'app', 'docs', 'swagger.yml')
+# Ruta relativa desde donde está main.py (/app/app/main.py)
+swagger_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "docs", "swagger.yml")
 
-Swagger(app, config=swagger_config, template_file=swagger_file_path)
+# Verificar que el archivo existe antes de inicializar Swagger
+if not os.path.exists(swagger_file_path):
+    print(f"⚠️ ADVERTENCIA: No se encontró swagger.yml en {swagger_file_path}")
+    swagger_file_path = None
+
+if swagger_file_path:
+    Swagger(app, config=swagger_config, template_file=swagger_file_path)
+else:
+    Swagger(app, config=swagger_config)
 
 # Registrar el Blueprint del microservicio analítico
 app.register_blueprint(analytics_bp, url_prefix="/api/analitica")
