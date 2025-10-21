@@ -21,7 +21,10 @@ def ingesta_mongodb():
 def ventas_por_dia():
     query = """
         SELECT 
-            date_format(date_parse(c.fecha_compra, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d') AS fecha_dia,
+            date_format(
+                date_parse(c.fecha_compra, '%Y-%m-%d %H:%i:%s.%f'), 
+                '%Y-%m-%d'
+            ) AS fecha_dia,
             SUM(cc.cantidad) AS total_unidades,
             SUM(cc.cantidad * p.precio) AS total_monto
         FROM compras c
