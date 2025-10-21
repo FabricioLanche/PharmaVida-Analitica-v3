@@ -11,8 +11,8 @@ RUN apt-get update && apt-get install -y \
 # Copiar requirements primero (para aprovechar cache de Docker)
 COPY requirements.txt .
 
-# Instalar dependencias de Python
-RUN pip install --no-cache-dir -r requirements.txt
+# Instalar dependencias de Python y asegurarse de incluir flasgger
+RUN pip install --no-cache-dir -r requirements.txt && pip install --no-cache-dir flasgger
 
 # Copiar el código de la aplicación
 COPY . .
